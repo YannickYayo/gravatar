@@ -1,23 +1,14 @@
 <?php
 class GravatarController extends BaseController {
 
-	/*
-	 |--------------------------------------------------------------------------
-	 | Default Home Controller
-	 |--------------------------------------------------------------------------
-	 |
-	 | You may wish to use controllers instead of, or in addition to, Closure
-	 | based routes. That's great! Here is an example controller method to
-	 | get you started. To route to this controller, just add the route:
-	 |
-	 |	Route::get('/', 'HomeController@showWelcome');
-	 |
-	 */
-
+	// HOMEPAGE
+	
 	public function index()
 	{
 		return View::make('home');
 	}
+	
+	//PAGE DE CONNEXION
 	
 	public function viewLogin(){
 		return View::make('login'); 
@@ -31,12 +22,29 @@ class GravatarController extends BaseController {
 		
         if (Auth::attempt($datas))
         {
-            return View::make('test') ;
+        	$avatars = $this->listAvatar($datas['username']);	
+        	return View::make('avatarlist')->with(array('login'=>$datas['username'],'avatars'=> $avatars));
+         
         }	
         else{
             return Redirect::route('login')->withErrors('Login/mdp invalide');
         }
 	}
+	
+	// ACCUEIL AVATAR
+	public function listAvatar($login){
+	
+		//on cherche le mail rataché a l'utilisateur
+		$user = User::where('username','=',$login)->first();
+		$email = $user['email'];
+		$avatars = User_image::where('email','=',$email)->get();
+		return $avatars;
+	
+	}
+	//GESTION DES AVATARS
+	
+	
+	// AJOUT D'UN UTILISATEUR 
 	
 	public function newUser(){
 		return View::make('userForm') ;
@@ -70,6 +78,12 @@ class GravatarController extends BaseController {
 			// on retourne les erreurs
 			return Redirect::route('newUser')->withInput()->withErrors($validator);
 		}
+	}
+	
+	//DECONNEXION
+	public function logout(){
+		Auth::logout();
+		return Redirect::to('/');
 	}
 
 }

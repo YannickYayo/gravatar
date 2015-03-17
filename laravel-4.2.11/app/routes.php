@@ -21,3 +21,6 @@ Route::post('/user/me',array('uses'=>'GravatarController@login','as'=>'logMe'));
 //ADD USER
 Route::get('/register',array('uses'=>'GravatarController@newUser','as'=>'newUser'));
 Route::post('/registerOK',array('uses'=>'GravatarController@createUser','as'=>'createUser'));
+
+//LOGOUT
+Route::get('/logout',array('uses'=>'GravatarController@logout','as'=>'logout'));
