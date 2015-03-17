@@ -11,7 +11,6 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('hello');
-});
+Route::get('/',array('uses'=>'GravatarController@index','as'=>'home'));
+Route::get('/login',array('uses'=>'GravatarController@viewLogin','as'=>'login'));
+Route::post('/user/me',array('uses'=>'GravatarController@login','as'=>'logMe'));
