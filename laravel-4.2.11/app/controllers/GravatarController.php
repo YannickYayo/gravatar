@@ -37,5 +37,39 @@ class GravatarController extends BaseController {
             return Redirect::route('login')->withErrors('Login/mdp invalide');
         }
 	}
+	
+	public function newUser(){
+		return View::make('userForm') ;
+	}
+	
+	public function createUser(){
+		$form = Input::all();
+	
+		// on valide les données du formulaire 
+		$validator = Validator::make(
+				Input::all(),
+				array(
+						'login'	=> 'required|min:4|unique:users,username',
+						'pwd'	=> 'required',
+						'pwd2' => 'required',
+						'email' => 'required|email|unique:users,email'
+				)
+		);
+		
+		if($validator->passes()){
+			if($form['pwd'] == $form['pwd2']){
+				$user = new User;
+				$user->username = $form['login'];
+				$user->password = Hash::make($form['pwd']);
+				$user->email = $form['email'];
+				$user->save();
+				return View::make('createUserSuccess')->with(array('login'=>Input::get('login')));
+			}
+		}
+		else{
+			// on retourne les erreurs
+			return Redirect::route('newUser')->withInput()->withErrors($validator);
+		}
+	}
 
 }
