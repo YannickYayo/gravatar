@@ -1,4 +1,6 @@
-<a href="{{ URL::route('logout') }}">Deconnexion</a><br />
+<a href="{{ URL::route('logout') }}">Deconnexion</a>
+<a href="{{ URL::route('addAvatar') }}"> Ajouter un avatar</a>
+<br />
 
 liste des avatars de {{ $login }} : <br/>
 @foreach($avatars as $a)

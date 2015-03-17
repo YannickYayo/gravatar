@@ -21,6 +21,8 @@ class GravatarController extends BaseController {
 			'password'=> Input::get('pwd')
 		);
 		
+		$_SESSION['login'] = $datas['username'];
+		
         if (Auth::attempt($datas))
         {
         	$avatars = $this->listAvatar($datas['username']);	
@@ -44,6 +46,23 @@ class GravatarController extends BaseController {
 	}
 	//GESTION DES AVATARS
 	
+	// ADD AVATAR
+	public function addAvatar(){
+		
+		return View::make('addAvatarForm');
+		
+	}
+	
+	
+	public function uploadAvatar(){
+		
+		
+		$file = Input::file('photo')->move("/avatars");
+
+		return $file;
+		
+	
+	}
 	//DELETE AVATAR 
 	public function deleteAvatar($id){
 		$user_image = User_image::find($id);
@@ -51,7 +70,6 @@ class GravatarController extends BaseController {
 		
 		$user = User::where('email','=',$mail)->first();
 		$login = $user['username'];
-		
 		
 		$user_image->delete();
 		$avatars = $this->listAvatar($login);
@@ -98,8 +116,10 @@ class GravatarController extends BaseController {
 	
 	//DECONNEXION
 	public function logout(){
+		
 		Auth::logout();
 		return Redirect::to('/');
+		
 	}
 
 }
