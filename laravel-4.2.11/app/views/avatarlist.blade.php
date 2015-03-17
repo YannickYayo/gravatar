@@ -2,5 +2,8 @@
 
 liste des avatars de {{ $login }} : <br/>
 @foreach($avatars as $a)
-	<img src="/avatars/{{ $a['image'] }}"/><br/>
+	<div>
+		<img src="/avatars/{{ $a['image'] }}" /><br/>
+		<a href="/delete/{{ $a['id'] }}">Supprimer</a>
+	</div>
 @endforeach

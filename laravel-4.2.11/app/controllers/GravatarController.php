@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\View;
 class GravatarController extends BaseController {
 
 	// HOMEPAGE
@@ -43,6 +44,21 @@ class GravatarController extends BaseController {
 	}
 	//GESTION DES AVATARS
 	
+	//DELETE AVATAR 
+	public function deleteAvatar($id){
+		$user_image = User_image::find($id);
+		$mail = $user_image['email'];
+		
+		$user = User::where('email','=',$mail)->first();
+		$login = $user['username'];
+		
+		
+		$user_image->delete();
+		$avatars = $this->listAvatar($login);
+		
+		return View::make('avatarlist')->with(array('login'=>$login,'avatars'=> $avatars));
+		
+	}
 	
 	// AJOUT D'UN UTILISATEUR 
 	

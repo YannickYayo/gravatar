@@ -22,5 +22,10 @@ Route::post('/user/me',array('uses'=>'GravatarController@login','as'=>'logMe'));
 Route::get('/register',array('uses'=>'GravatarController@newUser','as'=>'newUser'));
 Route::post('/registerOK',array('uses'=>'GravatarController@createUser','as'=>'createUser'));
 
+//ADD AVATAR
+
+//DELETE AVATAR
+Route::get('/delete/{id}',array('uses'=>'GravatarController@deleteAvatar','as'=>'delete'));
+
 //LOGOUT
 Route::get('/logout',array('uses'=>'GravatarController@logout','as'=>'logout'));
