@@ -18,6 +18,9 @@ Route::get('/',array('uses'=>'GravatarController@index','as'=>'home'));
 Route::get('/login',array('uses'=>'GravatarController@viewLogin','as'=>'login'));
 Route::post('/user/me',array('uses'=>'GravatarController@login','as'=>'logMe'));
 
+//LIST AVATAR
+Route::get('/user/me',array('uses'=>'GravatarController@avatarListView','as'=>'avatarlist'));
+
 //ADD USER
 Route::get('/register',array('uses'=>'GravatarController@newUser','as'=>'newUser'));
 Route::post('/registerOK',array('uses'=>'GravatarController@createUser','as'=>'createUser'));

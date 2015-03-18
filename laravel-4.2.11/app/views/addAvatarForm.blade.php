@@ -1,7 +1,7 @@
-{{ Form::open(array('route'=>'uploadAvatar'))  }}
+{{ Form::open(array('route'=>'uploadAvatar','files'=>true))  }}
 
-    {{ Form::label('photo','Image : ') }}
-    {{ Form::file('photo') }}<br/>
+    {{ Form::label('image','Image : ') }}
+    {{ Form::file('image') }}<br/>
     
     {{Form::submit('Valider')}}
     

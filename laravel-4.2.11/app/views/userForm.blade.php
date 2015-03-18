@@ -17,5 +17,5 @@
 {{ Form::close() }}
 
 @foreach($errors->all() as $e)
-        <li>{{{ $e }}}</li>
- @endforeach
+        <li>{{ $e }}</li>
+@endforeach

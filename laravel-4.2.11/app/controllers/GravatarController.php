@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Redirect;
 class GravatarController extends BaseController {
 
 	// HOMEPAGE
@@ -25,8 +26,9 @@ class GravatarController extends BaseController {
 		
         if (Auth::attempt($datas))
         {
+        	$login = Auth::user()->login;
         	$avatars = $this->listAvatar($datas['username']);	
-        	return View::make('avatarlist')->with(array('login'=>$datas['username'],'avatars'=> $avatars));
+        	return Redirect::route('avatarlist');
          
         }	
         else{
@@ -37,44 +39,60 @@ class GravatarController extends BaseController {
 	// ACCUEIL AVATAR
 	public function listAvatar($login){
 	
-		//on cherche le mail rataché a l'utilisateur
-		$user = User::where('username','=',$login)->first();
-		$email = $user['email'];
+		$email = Auth::user()->email;
 		$avatars = User_image::where('email','=',$email)->get();
 		return $avatars;
 	
 	}
 	//GESTION DES AVATARS
 	
+	
+	//LIST AVATAR
+	public function avatarListView(){
+		$login = Auth::user()->login;
+		$avatars = $this->listAvatar($login);	
+		return View::make('avatarlist')->with(array('avatars'=> $avatars,'login'=>$login));
+	}
 	// ADD AVATAR
-	public function addAvatar(){
-		
-		return View::make('addAvatarForm');
-		
+	public function addAvatar(){			
+		return View::make('addAvatarForm');	
 	}
 	
 	
 	public function uploadAvatar(){
 		
+		$file = Input::file('image');
+		$destinationPath = public_path().'/avatars/';
+		$filename = str_random(10).'_'.$file->getClientOriginalName();//Random name pour eviter les meme noms
+		$file->move($destinationPath,$filename);
+		$email = Auth::user()->email;
 		
-		$file = Input::file('photo')->move("/avatars");
+		$user_image = new User_image;
+		$user_image->email = $email;
+		$user_image->image = $filename;
+		$user_image->save();
 
-		return $file;
+		return Redirect::route('avatarlist');
 		
-	
 	}
 	//DELETE AVATAR 
 	public function deleteAvatar($id){
 		$user_image = User_image::find($id);
+		
 		$mail = $user_image['email'];
+		$image = $user_image['image'];
 		
 		$user = User::where('email','=',$mail)->first();
 		$login = $user['username'];
 		
+		$filename = public_path().'/avatars/'.$image;
+		File::delete($filename);
+		
 		$user_image->delete();
 		$avatars = $this->listAvatar($login);
 		
-		return View::make('avatarlist')->with(array('login'=>$login,'avatars'=> $avatars));
+		
+		return Redirect::route('avatarlist');
 		
 	}
 	
@@ -100,11 +118,13 @@ class GravatarController extends BaseController {
 		
 		if($validator->passes()){
 			if($form['pwd'] == $form['pwd2']){
+				
 				$user = new User;
 				$user->username = $form['login'];
 				$user->password = Hash::make($form['pwd']);
 				$user->email = $form['email'];
 				$user->save();
+				
 				return View::make('createUserSuccess')->with(array('login'=>Input::get('login')));
 			}
 		}
