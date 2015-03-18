@@ -1,0 +1,57 @@
+@CHARSET "ISO-8859-1"
+
+body{
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right:0;
+	font-family: Arial;
+	
+}
+
+#header{
+	position: absolute;
+	background-color: #f4645f;
+	top:0;
+	left:0;
+	right:0;
+	text-align: center;
+}
+
+#header h1{
+	font-size: 36px;
+	color: white;
+}
+#content{
+	position: absolute;
+	top:100px;
+	left:0;
+	right:0;
+}
+
+#content form{
+	text-align: center;
+}
+
+#content input{
+	padding: 9px;
+	color: #f4645f;
+	background: none;
+	border: 1px black solid;
+	line-height: 9px;
+	display: inline-block;
+}
+#content input[type=submit]{
+	color: black
+}
+#content label{
+	display: inline-block;
+	width: 100px;	
+	color: #f4645f;
+}
+
+#content h1{
+	color: #f4645f;
+
+}

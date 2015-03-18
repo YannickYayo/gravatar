@@ -1,3 +1,7 @@
+@extends('layouts.layout')
+
+@section('content')
+
 {{ Form::open(array('route'=>'uploadAvatar','files'=>true))  }}
 
     {{ Form::label('image','Image : ') }}
@@ -10,3 +14,5 @@
 @foreach($errors->all() as $e)
         <li>{{{ $e }}}</li>
  @endforeach
+ 
+ @stop

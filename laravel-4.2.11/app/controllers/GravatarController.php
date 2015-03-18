@@ -26,7 +26,6 @@ class GravatarController extends BaseController {
 		
         if (Auth::attempt($datas))
         {
-        	$login = Auth::user()->login;
         	$avatars = $this->listAvatar($datas['username']);	
         	return Redirect::route('avatarlist');
          
@@ -37,7 +36,7 @@ class GravatarController extends BaseController {
 	}
 	
 	// ACCUEIL AVATAR
-	public function listAvatar($login){
+	private function listAvatar($login){
 	
 		$email = Auth::user()->email;
 		$avatars = User_image::where('email','=',$email)->get();
