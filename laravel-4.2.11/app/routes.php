@@ -34,3 +34,6 @@ Route::get('/delete/{id}',array('uses'=>'GravatarController@deleteAvatar','as'=>
 
 //LOGOUT
 Route::get('/logout',array('uses'=>'GravatarController@logout','as'=>'logout'));
+
+//Api
+Route::controller('/api', 'ApiController');
