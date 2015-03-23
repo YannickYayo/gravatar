@@ -13,4 +13,10 @@ class ApiController extends BaseController  {
         )->setCallback(Input::get('callback'));
     }
 
+    public function getAvatar($email){
+
+        return Response::json(array('email' => $email)
+        )->setCallback(Input::get('callback'));
+    }
+
 }
