@@ -3,25 +3,88 @@
 <head lang="fr">
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title></title>
+    <title>Api</title>
+    <link rel="stylesheet" type="text/css" href="./css/materialize/css/materialize.min.css" />
+    <script type="text/javascript">
+        // fonction apiConfig
+        // exécute une requête ajax pour accèder à l'api distante
+        function apiConfig(){
+            // on exécute une seule fois la requête ajax
+            if (localStorage.getItem("config")==undefined){
+                $.ajax( {
+                    type:'Get',
+                    url:'http://gravatar/api/config',
+                    jsonp: "callback",
+                    dataType: 'jsonp',
+                    data: {format: "json"},
+                    success:function(data) {
+                        localStorage.setItem("config", JSON.stringify(data));
+                    }
+                });
+            }
+        }
+    </script>
 </head>
 <body>
+    <!-- ********* Section principale ********* -->
+    <section class="container">
+        <!-- ********* Bouton d'actions ********* -->
+        <article>
+            <a id="checkConfig" class="waves-effect waves-light btn"><i class="mdi-action-description right"></i>Voir la configuration de l'API</a>
+        </article>
+        <!-- ********* Article sur la config de l'api ********* -->
+        <article id="configuration">
+            <h3>Voici la configuration de l'API : </h3>
+            <p id="version">Version : </p>
+            <p>Tailles des avatars : </p>
+            <ul id="listSize">
 
+            </ul>
+            <p id="defaut">Taille par défaut de l'avatar : </p>
+            <p>Formats d'image supportés : </p>
+            <ul id="listFormats">
+
+            </ul>
+        </article>
+    </section>
 
     <script type="text/javascript" src="./js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="./css/materialize/js/materialize.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            $.ajax( {
-                type:'Get',
-                url:'http://gravatar/api/config',
-                jsonp: "callback",
-                dataType: 'jsonp',
-                data: {format: "json"},
-                success:function(data) {
-                    var json = data;
-                    alert(json.taillesAvatar.petit);
-                }
-            })
+
+            // on cache l'article de configuration
+            $("#configuration").hide();
+
+            // on affiche la configuration de l'api lors du clic sur le bouton qui a pour id checkConfig
+            $("#checkConfig").click(function(e){
+                apiConfig();
+                $("#configuration").fadeIn();
+            });
+
+            // config contient le json stocké dans le cache
+            var config = JSON.parse(localStorage.getItem("config"));
+
+            // affichage de la version de l'api
+            $("#version").append(config.version);
+
+            // tabTailles contient un tableau des tailles des avatars
+            var tabTailles = $.map(config.taillesAvatar, function(value){return value;});
+            // tabKeys contient les chaînes "petit", "moyen", "grand"
+            var tabKeys = Object.keys(config.taillesAvatar);
+            for (var i=0; i<Object.keys(config.taillesAvatar).length; i++){
+                // affichage de la liste des tailles des avatars
+                $("#listSize").append("<li><i class=\"tiny mdi-content-send\"></i> "+ tabKeys[i] +" : "+ tabTailles[i] +"</li>")
+            }
+
+            // affichage de la taille par defaut des avatars
+            $("#defaut").append(config.tailleAvatarDefaut);
+
+            for (var i=0; i<config.formatsSupportes.length; i++){
+                // affichage de la liste des formats d'image supportés
+                $("#listFormats").append("<li><i class=\"tiny mdi-content-send\"></i> "+ config.formatsSupportes[i] +"</li>");
+            }
+
         });
     </script>
 </body>
