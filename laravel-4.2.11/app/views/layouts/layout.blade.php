@@ -1,10 +1,10 @@
 <html>
 <head>
-	<title>Gravalanche</title>
-	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<title>Gravarel</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css"/>
+	<script src="/js/jquery-2.1.3.min.js"></script>
+	<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.css" />
+	<script src="/js/jquery-ui/jquery-ui.min.js"></script>
 </head>
 
 <body>

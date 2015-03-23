@@ -57,7 +57,6 @@ class GravatarController extends BaseController {
 		return View::make('addAvatarForm');	
 	}
 	
-	
 	public function uploadAvatar(){
 		
 		$file = Input::file('image');

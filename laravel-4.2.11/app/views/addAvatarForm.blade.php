@@ -1,13 +1,10 @@
-@extends('layouts.layout')
-
-@section('content')
-
 {{ Form::open(array('route'=>'uploadAvatar','files'=>true))  }}
 
     {{ Form::label('image','Image : ') }}
     {{ Form::file('image') }}<br/>
     
-    {{Form::submit('Valider')}}
+    {{Form::submit('Valider',array('class' => 'valid'))}}
+    <input type="button" value="Annuler" class='annul'/> 
     
 {{ Form::close() }}
 
@@ -15,4 +12,3 @@
         <li>{{{ $e }}}</li>
  @endforeach
  
- @stop
