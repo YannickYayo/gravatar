@@ -15,26 +15,7 @@ liste des avatars de {{ $login }} : <br/>
 @endforeach
 
 
-<script>
 
-$.widget('gravatar.avatarList',{
-	_create: function() {
-		this.options.suppButton = $('.supp');
-		this.options.suppButton.bind('click', $.proxy(this.suppClicked, this));
-		alert('1111');
-	},
-	suppClicked: function(event){
-		alert('test');
-		return false;
-	},
-	options: {
-		modal: null,
-	}
-});
-$(document).ready(function() {
-	$('#content').avatarList();
-});
-</script>
 
 
 @stop
