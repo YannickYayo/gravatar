@@ -55,3 +55,19 @@ body{
 	color: #f4645f;
 
 }
+#content .disconnect{
+	position: absolute;
+	right: 10px;
+	text-decoration: none;
+	background-color: #f4645f;
+	color: white;
+	border-radius: 5px;
+	padding: 5px;
+}
+#content .add{
+	text-decoration: none;
+	background-color: #27ae60;
+	color: white;
+	border-radius: 5px;
+	padding: 5px;
+}
