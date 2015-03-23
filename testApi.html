@@ -31,6 +31,14 @@
         <!-- ********* Bouton d'actions ********* -->
         <article>
             <a id="checkConfig" class="waves-effect waves-light btn"><i class="mdi-action-description right"></i>Voir la configuration de l'API</a>
+            <div class="row">
+                <form method="get" action="#">
+                    <div class="input-field col s6">
+                        <input id="email" type="email" />
+                        <label for="email">Saisissez une adresse email</label>
+                    </div>
+                </form>
+            </div>
         </article>
         <!-- ********* Article sur la config de l'api ********* -->
         <article id="configuration">
@@ -84,6 +92,8 @@
                 // affichage de la liste des formats d'image supportés
                 $("#listFormats").append("<li><i class=\"tiny mdi-content-send\"></i> "+ config.formatsSupportes[i] +"</li>");
             }
+
+
 
         });
     </script>
