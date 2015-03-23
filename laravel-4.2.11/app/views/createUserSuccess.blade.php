@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
 @section('content')
-Votre compte a correctement été créé ! 
+Votre compte a correctement Ã©tÃ© crÃ©Ã© !
 <a href="{{ URL::route('home') }}	">Retour a l'accueil !</a>
 @stop
