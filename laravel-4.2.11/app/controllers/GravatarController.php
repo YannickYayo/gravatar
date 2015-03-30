@@ -64,6 +64,9 @@ class GravatarController extends BaseController {
 		$email_md5 = md5($email);
 		$file = Input::file('image'); //on recupere l'image du formulaire
 		$destinationPath = public_path().'/avatars/'.$email; //on definit le repertoire qui va les recevoir
+		if (!file_exists($destinationPath)) { // on créé le dossier correspondant à l'adresse email si il n'existe pas
+			mkdir($destinationPath); // ce dossier contiendra les images
+		}
 		$randomString = str_random(10);//Random name pour eviter les meme noms
 
 		// on upload l'avatar sous 3 formats (200x200, 300x300 et 400x400)

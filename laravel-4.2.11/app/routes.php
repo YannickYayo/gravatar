@@ -15,14 +15,14 @@ Route::get('/',array('uses'=>'GravatarController@index','as'=>'home'));
 
 //LOGIN
 Route::get('/login',array('uses'=>'GravatarController@viewLogin','as'=>'login'));
-Route::post('/user/me',array('uses'=>'GravatarController@login','as'=>'logMe'));
+Route::post('/user/me',array('before' => 'csrf', 'uses'=>'GravatarController@login','as'=>'logMe'));
 
 //LIST AVATAR
 Route::get('/user/me',array('before'=>'auth','uses'=>'GravatarController@avatarListView','as'=>'avatarlist'));
 
 //ADD USER
 Route::get('/register',array('uses'=>'GravatarController@newUser','as'=>'newUser'));
-Route::post('/registerOK',array('uses'=>'GravatarController@createUser','as'=>'createUser'));
+Route::post('/registerOK',array('before' => 'csrf', 'uses'=>'GravatarController@createUser','as'=>'createUser'));
 
 //ADD AVATAR
 Route::get('/addAvatar',array('before'=>'auth','uses'=>'GravatarController@addAvatar','as'=>'addAvatar'));
