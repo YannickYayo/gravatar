@@ -13,11 +13,10 @@
             // on exécute une seule fois la requête ajax
             if (localStorage.getItem("config")==undefined){
                 $.ajax( {
-                    type:'Get',
+                    type:'get',
                     url:'http://gravatar/api/config',
-                    //jsonp: "callback",
-                    dataType: 'json',
-                    data: {format: "json"},
+                    jsonp: "callback",
+                    dataType: 'jsonp',
                     success:function(data) {
                         localStorage.setItem("config", JSON.stringify(data));
                         console.log(data);
@@ -25,20 +24,6 @@
                 });
             }
         }
-
-        function apiAvatar(email){
-            $.ajax({
-                type: 'Get',
-                url: 'http://gravatar/api/avatar/'+email,
-                dataType: 'image/png',
-                crossDomain: true,
-                success:function(data) {
-                    console.log(data);
-                }
-            });
-        }
-
-
 
     </script>
 </head>
@@ -53,10 +38,12 @@
                     <div class="input-field col s4">
                         <i class="mdi-action-account-circle prefix"></i>
                         <input id="email" type="email" />
-                        <label for="email">Saisissez une adresse email</label>
+                        <label for="email">Saisissez une adresse email</label><br/>
+
                         <a id="checkAvatar" class="waves-effect waves-light btn"></i>Valider</a>
                     </div>
                 </form>
+                <img id="apiAvatar" src="" alt=""/>
             </div>
         </article>
         <!-- ********* Article sur la config de l'api ********* -->
@@ -88,36 +75,37 @@
             // on affiche la configuration de l'api lors du clic sur le bouton qui a pour id checkConfig
             $("#checkConfig").click(function(){
                 apiConfig();
+                // config contient le json stocké dans le cache
+                var config = JSON.parse(localStorage.getItem("config"));
+                if (config!=undefined){
+                    // affichage de la version de l'api
+                    $("#version").append(config.version);
+
+                    // tabTailles contient un tableau des tailles des avatars
+                    var tabTailles = $.map(config.taillesAvatar, function(value){return value;});
+                    // tabKeys contient les chaînes "petit", "moyen", "grand"
+                    var tabKeys = Object.keys(config.taillesAvatar);
+                    for (var i=0; i<Object.keys(config.taillesAvatar).length; i++){
+                        // affichage de la liste des tailles des avatars
+                        $("#listSize").append("<li><i class=\"tiny mdi-content-send\"></i> "+ tabKeys[i] +" : "+ tabTailles[i] +"</li>")
+                    }
+
+                    // affichage de la taille par defaut des avatars
+                    $("#defaut").append(config.tailleAvatarDefaut);
+
+                    for (var i=0; i<config.formatsSupportes.length; i++){
+                        // affichage de la liste des formats d'image supportés
+                        $("#listFormats").append("<li><i class=\"tiny mdi-content-send\"></i> "+ config.formatsSupportes[i] +"</li>");
+                    }
+                }
                 $("#configuration").fadeIn();
             });
 
             // on affiche l'avatar correspondant à l'adresse mail
             $("#checkAvatar").click(function(){
-                apiAvatar($("#email").val());
+                var email = $('#email').val();
+                $('#apiAvatar').attr('src', 'http://gravatar/api/avatar/'+email);
             });
-
-            // config contient le json stocké dans le cache
-            var config = JSON.parse(localStorage.getItem("config"));
-
-            // affichage de la version de l'api
-            $("#version").append(config.version);
-
-            // tabTailles contient un tableau des tailles des avatars
-            var tabTailles = $.map(config.taillesAvatar, function(value){return value;});
-            // tabKeys contient les chaînes "petit", "moyen", "grand"
-            var tabKeys = Object.keys(config.taillesAvatar);
-            for (var i=0; i<Object.keys(config.taillesAvatar).length; i++){
-                // affichage de la liste des tailles des avatars
-                $("#listSize").append("<li><i class=\"tiny mdi-content-send\"></i> "+ tabKeys[i] +" : "+ tabTailles[i] +"</li>")
-            }
-
-            // affichage de la taille par defaut des avatars
-            $("#defaut").append(config.tailleAvatarDefaut);
-
-            for (var i=0; i<config.formatsSupportes.length; i++){
-                // affichage de la liste des formats d'image supportés
-                $("#listFormats").append("<li><i class=\"tiny mdi-content-send\"></i> "+ config.formatsSupportes[i] +"</li>");
-            }
 
             
         });
