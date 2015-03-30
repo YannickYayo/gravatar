@@ -5,7 +5,7 @@
 | Application Routes
 |--------------------------------------------------------------------------
 |
-| Toutes les routes sont renoé de manière claire avec l'attribut 'as'
+| Toutes les routes sont renoï¿½ de maniï¿½re claire avec l'attribut 'as'
 | 
 |
 */
@@ -29,7 +29,7 @@ Route::get('/addAvatar',array('before'=>'auth','uses'=>'GravatarController@addAv
 Route::post('/uploadAvatar',array('before'=>'auth','uses'=>'GravatarController@uploadAvatar','as'=>'uploadAvatar'));
 
 //DELETE AVATAR
-Route::get('/delete/{id}',array('before'=>'auth','uses'=>'GravatarController@deleteAvatar','as'=>'deleteAvatar'));
+Route::get('/delete/{randomString}',array('before'=>'auth','uses'=>'GravatarController@deleteAvatar','as'=>'deleteAvatar'));
 
 //LOGOUT
 Route::get('/logout',array('before'=>'auth','uses'=>'GravatarController@logout','as'=>'logout'));

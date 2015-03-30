@@ -14,7 +14,7 @@ class CreateImageUserTable extends Migration {
 	{
 		Schema::create('user_images', function($t) {
 			$t->increments('id');
-			$t->string('email',100)->unique();
+			$t->string('email',100);
 			$t->string('image',100);
 			$t->timestamps();
 			//$t->foreign('email')->references('email')->on('users');

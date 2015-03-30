@@ -7,11 +7,14 @@
 <br /><br />
 
 liste des avatars de {{ $login }} : <br/>
+
 @foreach($avatars as $a)
+	@if(preg_match('#'.'300x300'.'#', $a['image']))
 	<div>
-		<img src="/avatars/{{ $a['image'] }}" /><br/>
-		<a href="/delete/{{ $a['id'] }}" class="supp">Supprimer</a>
+		<img src="/avatars/{{ $a['email']  }}/{{ $a['image'] }}" /><br/>
+		<a href="/delete/{{ substr($a['image'], 0, 10) }}" class="supp">Supprimer</a>
 	</div>
+	@endif
 @endforeach
 
 

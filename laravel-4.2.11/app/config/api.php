@@ -7,7 +7,7 @@
  */
 return array(
     'version' => '1.0',
-    'taillesAvatar' => array('petit' => '100x100', 'moyen'  => '200x200', 'grand' =>'300x300'),
-    'tailleAvatarDefaut' => '200x200',
+    'taillesAvatar' => array('petit' => '200x200', 'moyen'  => '300x300', 'grand' =>'400x400'),
+    'tailleAvatarDefaut' => '300x300',
     'formatsSupportes' => array('png', 'jpg')
 );

@@ -59,35 +59,51 @@ class GravatarController extends BaseController {
 	}
 	
 	public function uploadAvatar(){ //upload l'image dans le dosier public/avatars et enregistre la correspondance avec l'utilisateur en bd
-		
+
+		$email = Auth::user()->email; //on recupere l'email
 		$file = Input::file('image'); //on recupere l'image du formulaire
-		$destinationPath = public_path().'/avatars/'; //on definit le repertoire qui va les recevoir
-		$filename = str_random(10).'_'.$file->getClientOriginalName();//Random name pour eviter les meme noms
-		$file->move($destinationPath,$filename); //on deplace l'avatar dans le dossier prevu a cet effet
-		$email = Auth::user()->email; //on recupere l'email 
-		
-		$user_image = new User_image; //on creer un objet 
- 		$user_image->email = $email; //on lui affecte l'email
+		$destinationPath = public_path().'/avatars/'.$email; //on definit le repertoire qui va les recevoir
+		$randomString = str_random(10);//Random name pour eviter les meme noms
+
+		// on upload l'avatar sous 3 formats (200x200, 300x300 et 400x400)
+		$filename = $randomString.'_200x200_'.$file->getClientOriginalName();// on créé le nom du fichier
+		Image::make($file)->resize(200, 200)->save($destinationPath.'/'.$filename);//on deplace l'avatar dans le dossier prevu a cet effet
+		$user_image = new User_image; //on creer un objet
+		$user_image->email = $email; //on lui affecte l'email
 		$user_image->image = $filename; // et l'image recuperer
 		$user_image->save(); // on l'enregistre en bd
 
-		return Redirect::route('avatarlist'); //on reafiche la liste
+		$filename = $randomString.'_300x300_'.$file->getClientOriginalName();//Random name pour eviter les meme noms
+		Image::make($file)->resize(300, 300)->save($destinationPath.'/'.$filename);//on deplace l'avatar dans le dossier prevu a cet effet
+		$user_image = new User_image; //on creer un objet
+		$user_image->email = $email; //on lui affecte l'email
+		$user_image->image = $filename; // et l'image recuperer
+		$user_image->save(); // on l'enregistre en bd
+
+		$filename = $randomString.'_400x400_'.$file->getClientOriginalName();//Random name pour eviter les meme noms
+		Image::make($file)->resize(400, 400)->save($destinationPath.'/'.$filename);//on deplace l'avatar dans le dossier prevu a cet effet
+		$user_image = new User_image; //on creer un objet
+		$user_image->email = $email; //on lui affecte l'email
+		$user_image->image = $filename; // et l'image recuperer
+		$user_image->save(); // on l'enregistre en bd
+
+		return Redirect::route('avatarlist'); //on reaffiche la liste
 		
 	}
 	//DELETE AVATAR 
-	public function deleteAvatar($id){ //supprime la correspondance en bd et l'image dans le dossier public avec en parametre l'id de l'avatar
-		$user_image = User_image::find($id); //on cherche le bon enregistrement 
-		
-		$mail = $user_image['email']; //on recupere le mail
-		$image = $user_image['image']; // et l'image 
-		
-		$login = Auth::user()->username; // on recupere le ogin de l'utilisateur
-		
-		$filename = public_path().'/avatars/'.$image; //on recupere le chemin de l'image
-		File::delete($filename); //on supprime l'image du dossier public 
-		
-		$user_image->delete(); //on supprime la correspondance
- 		return Redirect::route('avatarlist'); //on affiche la nouvelle liste d'avatar		
+	public function deleteAvatar($randomString){ //supprime la correspondance en bd et l'image dans le dossier public avec en parametre l'id de l'avatar
+
+		$images = User_image::where('image', 'like', $randomString.'%')->get();
+
+		foreach ($images as $img){
+			$mail = $img['email']; //on recupere le mail
+			$image = $img['image']; // et l'image
+			$filename = public_path().'/avatars/'.$mail.'/'.$image; //on recupere le chemin de l'image
+			File::delete($filename); //on supprime l'image du dossier public
+		}
+
+		User_image::where('image', 'like', $randomString.'%')->delete(); //on supprime la correspondance
+ 		return Redirect::route('avatarlist'); //on affiche la nouvelle liste d'avatar
 	}
 	
 	// AJOUT D'UN UTILISATEUR 
