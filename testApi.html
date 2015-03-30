@@ -34,7 +34,7 @@
                 success:function(data) {
                     if (data == ""){
                         // l'adresse email entrée n'existe pas
-                        $("#img").append('<p>L\'adresse email n\'existe pas</p>');
+                        $("#img").append('<p>L\'adresse email n\'existe pas ou la taille demandée est erronée</p>');
                     }else{
                         // si des images ont déjà été affichée on les supprime
                         $("#img").find("img").remove();
