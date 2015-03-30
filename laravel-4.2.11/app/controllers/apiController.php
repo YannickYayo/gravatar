@@ -9,24 +9,31 @@
 class ApiController extends BaseController  {
 
     public function getConfig(){
-        /*
-        return Response::json(Config::get(api)
+
+        return Response::json(array('version' => Config::get('api.version'),
+                'taillesAvatar' => Config::get('api.taillesAvatar'),
+                'tailleAvatarDefaut' => Config::get('api.tailleAvatarDefaut'),
+                'formatsSupportes' => Config::get('api.formatsSupportes')
+            )
         )->setCallback(Input::get('callback'));
-        */
-        $response = Response::json(Config::get(api));
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-        return $response;
     }
 
-    public function getAvatar($email){
+    public function getAvatar($email_md5, $size){
 
-        $img = Image::make('/avatars/yannick.leone@gmail.com/L4a7WLsjn6_300x300_62_800.jpg');
 
-        // create response and add encoded image data
-        $response = Response::make($img->encode('png'));
+        // on sélectionne dans la base les tuples correspondants à l'adresse email
+        $user_images = User_image::where('email_md5', '=', $email_md5)->where('image', 'like', '%'.$size.'%')->get();
 
-        // set content-type
-        $response->header('Content-Type', 'image/png');
+        // on parcours les tuples pour récupéré le nom des images
+        $arraySrc = array();
+        foreach($user_images as $user_image){
+            $imgName = $user_image['image'];
+            $email = $user_image['email'];
+            // dans notre tableau on y met les sources des images
+            $src = 'http://gravatar/avatars/'.$email.'/'.$imgName;
+            array_push($arraySrc, $src);
+        }
+        return Response::json($arraySrc)->setCallback(Input::get('callback'));
 
         // output
         return $response;

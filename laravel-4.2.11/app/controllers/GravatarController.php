@@ -61,6 +61,7 @@ class GravatarController extends BaseController {
 	public function uploadAvatar(){ //upload l'image dans le dosier public/avatars et enregistre la correspondance avec l'utilisateur en bd
 
 		$email = Auth::user()->email; //on recupere l'email
+		$email_md5 = md5($email);
 		$file = Input::file('image'); //on recupere l'image du formulaire
 		$destinationPath = public_path().'/avatars/'.$email; //on definit le repertoire qui va les recevoir
 		$randomString = str_random(10);//Random name pour eviter les meme noms
@@ -70,6 +71,7 @@ class GravatarController extends BaseController {
 		Image::make($file)->resize(200, 200)->save($destinationPath.'/'.$filename);//on deplace l'avatar dans le dossier prevu a cet effet
 		$user_image = new User_image; //on creer un objet
 		$user_image->email = $email; //on lui affecte l'email
+		$user_image->email_md5 = $email_md5;
 		$user_image->image = $filename; // et l'image recuperer
 		$user_image->save(); // on l'enregistre en bd
 
@@ -77,6 +79,7 @@ class GravatarController extends BaseController {
 		Image::make($file)->resize(300, 300)->save($destinationPath.'/'.$filename);//on deplace l'avatar dans le dossier prevu a cet effet
 		$user_image = new User_image; //on creer un objet
 		$user_image->email = $email; //on lui affecte l'email
+		$user_image->email_md5 = $email_md5;
 		$user_image->image = $filename; // et l'image recuperer
 		$user_image->save(); // on l'enregistre en bd
 
@@ -84,6 +87,7 @@ class GravatarController extends BaseController {
 		Image::make($file)->resize(400, 400)->save($destinationPath.'/'.$filename);//on deplace l'avatar dans le dossier prevu a cet effet
 		$user_image = new User_image; //on creer un objet
 		$user_image->email = $email; //on lui affecte l'email
+		$user_image->email_md5 = $email_md5;
 		$user_image->image = $filename; // et l'image recuperer
 		$user_image->save(); // on l'enregistre en bd
 
