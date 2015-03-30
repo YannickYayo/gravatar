@@ -117,7 +117,13 @@
             $("#configuration").hide();
 
             // on affiche la configuration de l'api lors du clic sur le bouton qui a pour id checkConfig
+            var clicked = false;
             $("#checkConfig").click(function(){
+                if (clicked){
+                    clicked = false;
+                }else{
+                    clicked = true;
+                }
                 apiConfig();
                 // config contient le json stocké dans le cache
                 var config = JSON.parse(localStorage.getItem("config"));
@@ -142,7 +148,15 @@
                         $("#listFormats").append("<li><i class=\"tiny mdi-content-send\"></i> "+ config.formatsSupportes[i] +"</li>");
                     }
                 }
-                $("#configuration").fadeIn();
+
+                if (clicked){
+                    $("#checkConfig").html("<i class=\"mdi-action-description right\"></i>Cacher la configuration de l'API");
+                    $("#configuration").fadeIn();
+                }else{
+                    $("#checkConfig").html("<i class=\"mdi-action-description right\"></i>Voir la configuration de l'API");
+                    $("#configuration").fadeOut();
+                }
+
             });
 
             // on affiche l'avatar correspondant à l'adresse mail
