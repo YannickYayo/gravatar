@@ -125,22 +125,21 @@ class GravatarController extends BaseController {
 				array(
 						'login'	=> 'required|min:4|unique:users,username',  //login oblgatoire, minimum 4lettres,unique en bd
 						'pwd'	=> 'required', //champ obligatoire
-						'pwd2' => 'required', //champ obligatoire
-						'email' => 'required|email|unique:users,email' //obligatoire, de type email et unique 
+						'pwd2' => 'required|same:pwd', //champ obligatoire et doit correspondre à pwd
+						'email' => 'required|email|unique:users,email' //obligatoire, de type email et unique
 				)
 		);
 		
 		if($validator->passes()){ //si c'est valide
-			if($form['pwd'] == $form['pwd2']){
-				
-				$user = new User; //on creer un nouvel utilisateur
-				$user->username = $form['login'];
-				$user->password = Hash::make($form['pwd']);//on hashe le mot de passe pour des question de securite
-				$user->email = $form['email']; 
-				$user->save();//on enregistre
-				
-				return View::make('createUserSuccess')->with(array('login'=>Input::get('login'))); // on affiche la vue de succes 
-			}
+
+			$user = new User; //on creer un nouvel utilisateur
+			$user->username = $form['login'];
+			$user->password = Hash::make($form['pwd']);//on hashe le mot de passe pour des question de securite
+			$user->email = $form['email'];
+			$user->save();//on enregistre
+
+			return View::make('createUserSuccess')->with(array('login'=>Input::get('login'))); // on affiche la vue de succes
+
 		}
 		else{//sinon
 			return Redirect::route('newUser')->withInput()->withErrors($validator); //on retourne le formulaire avec les messages d'erreurs
